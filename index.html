@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contagem Regressiva</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --background: #FFFFFF;
+      --black: #4D4C59;
+      --purple: #6C63FF;
+      --light-grey: #C8C8C8;
+      --text-color: #9C9AB6;
+
+      font-family: "Poppins", sans-serif;
+      font-weight: 300, 400, 500;
+    }
+
+    body {
+      background: url(https://img.freepik.com/vetores-gratis/fundo-de-celebracao-com-um-design-colorido-de-borda-de-confete_1048-19812.jpg?w=740&t=st=1723749770~exp=1723750370~hmac=95fb86318b05fdfeba41c1b03b400d0705b8e151c3c73e071e9360377369cbb5) no-repeat top/cover;
+      backdrop-filter: blur(4px);
+      margin: 0;
+      padding: 0;
+    }
+
+    .background {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .container {
+      max-width: 950px;
+      max-height: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 50px;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+    .countdown {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px;
+      gap: 2rem;
+    }
+
+    .countdown h1 {
+      color: rgb(3, 87, 21);
+      font-weight: bold;
+      font-size: 2rem;
+    }
+
+    .time-box-container {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .time-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-box p {
+      color: blue;
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    .time-box span {
+      color: red;
+      font-weight: 400;
+      font-size: 4.5rem;
+    }
+
+    .countdown h2 {
+      color: var(--text-color);
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    .image_foguete {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .image_foguete img {
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .image_foguete {
+      position: relative;
+      z-index: -1;
+    }
+
+    /* media queries */
+    @media only screen and (max-width: 940px) {
+      .container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .countdown {
+        flex: none;
+        margin-right: 1rem;
+      }
+
+      .countdown h1 {
+        font-size: 1.5rem;
+      }
+
+      .time-box span {
+        font-size: 2rem;
+      }
+
+      .image_foguete {
+        flex: none;
+      }
+    }
+
+    @media only screen and (max-width: 800px) {
+      .countdown h2 {
+        font-size: 1rem;
+      }
+    }
+
+    @media only screen and (max-width: 390px) {
+      .container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .countdown {
+        flex: none;
+        margin: 0;
+        margin-bottom: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background">
+    <div class="container">
+      <div class="countdown" id="countdown">
+        <h1>ANIVERSARIO LUIZ OTÁVIO EM...</h1>
+        <div class="time-box-container">
+          <div class="time-box">
+            <p class="text">Dias</p>
+            <span id="days"></span>
+          </div>
+          <div class="time-box">
+            <p class="text">Horas</p>
+            <span id="hours"></span>
+          </div>
+          <div class="time-box">
+            <p class="text">Minutos</p>
+            <span id="minutes"></span>
+          </div>
+          <div class="time-box">
+            <p class="text">Segundos</p>
+            <span id="seconds"></span>
+          </div>
+        </div>
+      </div>
+      <div class="image_foguete">
+        <img src="./luiz_.png" alt="imagem luiz">
+      </div>
+    </div>
+  </div>
+  <script>
+    function dataLancamento() {
+      return new Date('Sep 10, 2024 00:00:00').getTime();
+    }
+
+    function diferencaTempo(lancamento) {
+      const agora = new Date().getTime();
+      return lancamento - agora;
+    }
+
+    function contagemRegressiva() {
+      const lancamento = dataLancamento();
+      const distancia = diferencaTempo(lancamento);
+
+      const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+      document.getElementById('days').innerText = dias;
+      document.getElementById('hours').innerText = horas.toString().padStart(2, '0');
+      document.getElementById('minutes').innerText = minutos.toString().padStart(2, '0');
+      document.getElementById('seconds').innerText = segundos.toString().padStart(2, '0');
+
+      if (distancia < 0) {
+        clearInterval(intervalId);
+        document.querySelector('.countdown').innerHTML = "<h1>E hojeee!</h1>";
+      }
+    }
+
+    let intervalId;
+
+    function iniciarContagem() {
+      contagemRegressiva();
+      intervalId = setInterval(contagemRegressiva, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+      iniciarContagem();
+    });
+  </script>
+</body>
+
+</html>
